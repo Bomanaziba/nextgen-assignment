@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using PaySpace.Calculator.Services.Common;
 
-namespace PaySpace.Calculator.Services.Middleware;
+namespace PaySpace.Calculator.API.Middleware;
 
 public class ApplicationExcpetionHandler(RequestDelegate next, ILogger<ApplicationExcpetionHandler> logger)
 {
@@ -29,11 +29,7 @@ public class ApplicationExcpetionHandler(RequestDelegate next, ILogger<Applicati
             };
 
             context.Response.StatusCode = error.HttpStatusCode;
-            await context.Response.WriteAsync(JsonSerializer.Serialize(error, new JsonSerializerOptions
-            {
-                WriteIndented = true,
-                IncludeFields = true
-            }), Encoding.UTF8);
+            await context.Response.WriteAsJsonAsync(error);
         }
     }
 

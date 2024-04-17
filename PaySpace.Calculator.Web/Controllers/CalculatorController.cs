@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using PaySpace.Calculator.Web.Services.Abstractions;
-using PaySpace.Calculator.Web.Services.Models;
 using PaySpace.Calculator.Web.Services.ViewModel;
 
 namespace PaySpace.Calculator.Web.Controllers

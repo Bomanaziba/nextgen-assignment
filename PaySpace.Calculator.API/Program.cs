@@ -1,9 +1,8 @@
 using System.Text.Json.Serialization;
 using Mapster;
-
+using PaySpace.Calculator.API.Middleware;
 using PaySpace.Calculator.Data;
 using PaySpace.Calculator.Services;
-using PaySpace.Calculator.Services.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
