@@ -19,8 +19,6 @@ namespace PaySpace.Calculator.Services
         {
             try
             {
-                throw new ArgumentNullException();
-
                 var repo = await GetPostalCodesAsync();
 
                 if (repo == null || !repo.Any() || repo.Count <= 0)
