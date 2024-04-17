@@ -4,10 +4,10 @@ namespace PaySpace.Calculator.Web.Services.Abstractions
 {
     public interface ICalculatorHttpService
     {
-        Task<List<PostalCode>> GetPostalCodesAsync();
+        Task<PostalCodeResponse> GetPostalCodesAsync();
 
-        Task<List<CalculatorHistory>> GetHistoryAsync();
+        Task<CalculatorHistoryResponse> GetHistoryAsync();
 
-        Task<CalculateResult> CalculateTaxAsync(CalculateRequest calculationRequest);
+        Task<CalculateResponse> CalculateTaxAsync(CalculateRequest calculationRequest);
     }
 }

@@ -1,44 +1,101 @@
 
+using System.Net;
 using Microsoft.Extensions.Logging;
 using PaySpace.Calculator.Data.Models;
 using PaySpace.Calculator.Services.Abstractions;
+using PaySpace.Calculator.Services.Common;
+using PaySpace.Calculator.Services.Response;
 
 namespace PaySpace.Calculator.Services;
 
-public class TaxCalculatorService(IPostalCodeService postalCodeService, ICalculatorSettingsService calculatorSettingsService, ILogger<TaxCalculatorService> logger) : ITaxCalculatorService
+public class TaxCalculatorService(IPostalCodeService postalCodeService, 
+    ICalculatorSettingsService calculatorSettingsService, 
+    IHistoryService historyService,
+    ILogger<TaxCalculatorService> logger) : ITaxCalculatorService
 {
 
-    public async Task<(decimal tax, CalculatorType calculatorType)> CaculateTax(string? postalCode, decimal income)
+    public async Task<CalculateTaxResponse> CaculateTax(string? postalCode, decimal income)
     {
         try
         {
-            decimal tax = default; 
-            CalculatorType calculatorType = default;
+            if(string.IsNullOrEmpty(postalCode))
+            {
+                return new CalculateTaxResponse
+                {
+                    HttpStatusCode = (int)HttpStatusCode.BadRequest,
+                    ResponseCode = SystemCodes.InvalidPostalCode,
+                    Message = "Invalid postal code."
+                };
+            }
 
-            var repo = await postalCodeService.GetPostalCodesAsync();
+            if(income < 0)
+            {
+                return new CalculateTaxResponse
+                {
+                    HttpStatusCode = (int)HttpStatusCode.BadRequest,
+                    ResponseCode = SystemCodes.InvalidIncome,
+                    Message = "Invalid income."
+                };
+            }
 
-            var postalTax = repo.Where(p => p.Code == postalCode).FirstOrDefault();
+            PostalCode postalTax = await ProcessPostalCalculatorType(postalCode);
 
             if(postalTax == null)
             {
-                return (tax,calculatorType);
+                return new CalculateTaxResponse
+                {
+                    HttpStatusCode = (int)HttpStatusCode.NotFound,
+                    ResponseCode = SystemCodes.DataNotFound,
+                    Message = "Tax for postal code not found."
+                };
             }
 
-            calculatorType = postalTax.Calculator;
+            CalculatorType calculatorType = postalTax.Calculator;
 
-            var calculateSettings = await calculatorSettingsService.GetSettingsAsync(postalTax.Calculator);
+            decimal tax = await ProcessTaxCalculation(calculatorType, income);
+            await ProcessStoreTaxHistory(tax, calculatorType, postalCode, income);
 
-            var taxPercentage = calculateSettings.Where(p => p.From <= income && p.To >= income).FirstOrDefault();
-
-            tax = ((taxPercentage?.Rate??0M)/100) * income;
-
-            return (tax,calculatorType);
+            return new CalculateTaxResponse
+            {
+                Tax = tax,
+                Calculator = calculatorType.ToString(),
+                HttpStatusCode = (int)HttpStatusCode.OK,
+                ResponseCode = SystemCodes.Successful,
+                Message = "SUCCESSFUL"
+            };
         }
         catch(Exception ex)
         {
             logger.LogError(ex, ex.Message);
 
             throw;
+        }
+
+        async Task<decimal> ProcessTaxCalculation(CalculatorType calculatorType, decimal income)
+        {
+            var calculateSettings = await calculatorSettingsService.GetSettingsAsync(calculatorType);
+
+            var taxPercentage = calculateSettings.Where(p => p.From <= income && p.To >= income).FirstOrDefault();
+
+            return ((taxPercentage?.Rate??0M)/100) * income;
+        }
+
+        async Task ProcessStoreTaxHistory(decimal tax, CalculatorType calculatorType, string postalCode, decimal income)
+        {
+            await historyService.AddAsync(new CalculatorHistory
+            {
+                Tax = tax,
+                Calculator = calculatorType,
+                PostalCode = postalCode ?? "Unknown",
+                Income = income
+            });
+        }
+
+        async Task<PostalCode> ProcessPostalCalculatorType(string postalCode)
+        {
+            var repo = await postalCodeService.GetPostalCodesAsync();
+
+            return repo?.Where(p => p.Code == postalCode).FirstOrDefault();
         }
     }
 }

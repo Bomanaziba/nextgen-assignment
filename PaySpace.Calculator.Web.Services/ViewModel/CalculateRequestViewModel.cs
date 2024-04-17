@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace PaySpace.Calculator.Web.Models
+namespace PaySpace.Calculator.Web.Services.ViewModel
 {
     public sealed class CalculateRequestViewModel
     {

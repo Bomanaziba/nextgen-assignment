@@ -11,7 +11,7 @@ namespace PaySpace.Calculator.Web.Services
     public class CalculatorHttpService(HttpClient httpClient, ILogger<CalculatorHttpService> logger) : ICalculatorHttpService
     {
         
-        public async Task<List<PostalCode>> GetPostalCodesAsync()
+        public async Task<PostalCodeResponse> GetPostalCodesAsync()
         {
             var response = await httpClient.GetAsync("api/postalcode");
             
@@ -22,10 +22,10 @@ namespace PaySpace.Calculator.Web.Services
                 throw new Exception($"Cannot fetch postal codes, status code: {response.StatusCode}");
             }
 
-            return await response.Content.ReadFromJsonAsync<List<PostalCode>>() ?? [];
+            return await response.Content.ReadFromJsonAsync<PostalCodeResponse>() ?? new();
         }
 
-        public async Task<List<CalculatorHistory>> GetHistoryAsync()
+        public async Task<CalculatorHistoryResponse> GetHistoryAsync()
         {
             var response = await httpClient.GetAsync("api/calculator/history");
             
@@ -36,10 +36,10 @@ namespace PaySpace.Calculator.Web.Services
                 throw new Exception($"Cannot fetch tax history, status code: {response.StatusCode}");
             }
 
-            return await response.Content.ReadFromJsonAsync<List<CalculatorHistory>>() ?? [];
+            return await response.Content.ReadFromJsonAsync<CalculatorHistoryResponse>() ?? new();
         }
 
-        public async Task<CalculateResult> CalculateTaxAsync(CalculateRequest calculationRequest)
+        public async Task<CalculateResponse> CalculateTaxAsync(CalculateRequest calculationRequest)
         {
             var requestData = JsonSerializer.Serialize(calculationRequest);
             
@@ -54,7 +54,7 @@ namespace PaySpace.Calculator.Web.Services
                 throw new Exception($"Cannot calculate tax, status code: {response.StatusCode}");
             }
 
-            return await response.Content.ReadFromJsonAsync<CalculateResult>() ?? new();
+            return await response.Content.ReadFromJsonAsync<CalculateResponse>() ?? new();
         }
     }
 }

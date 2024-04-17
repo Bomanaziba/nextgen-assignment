@@ -1,19 +1,18 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
-using PaySpace.Calculator.Web.Models;
 using PaySpace.Calculator.Web.Services.Abstractions;
 using PaySpace.Calculator.Web.Services.Models;
+using PaySpace.Calculator.Web.Services.ViewModel;
 
 namespace PaySpace.Calculator.Web.Controllers
 {
-    public class CalculatorController(ICalculatorHttpService calculatorHttpService) : Controller
+    public class CalculatorController(ICalculatorService calculatorService) : Controller
     {
         public async Task<IActionResult> Index()
         {
-            var vm = await this.GetCalculatorViewModelAsync();
+            var calculatorView = await calculatorService.GetCalculateTaxView();
 
-            return this.View(vm);
+            return this.View(calculatorView);
         }
 
         [HttpPost]
@@ -24,11 +23,7 @@ namespace PaySpace.Calculator.Web.Controllers
             {
                 try
                 {
-                    await calculatorHttpService.CalculateTaxAsync(new CalculateRequest
-                    {
-                        PostalCode = request.PostalCode,
-                        Income = request.Income
-                    });
+                    await calculatorService.ProcessCalculateTax(request);
 
                     return this.RedirectToAction(nameof(this.History));
                 }
@@ -38,37 +33,17 @@ namespace PaySpace.Calculator.Web.Controllers
                 }
             }
 
-            var vm = await this.GetCalculatorViewModelAsync(request);
+            var calculatorViewModel = await calculatorService.GetCalculateTaxView(request);
 
-            return this.View(vm);
+            return this.View(calculatorViewModel);
         }
 
         public async Task<IActionResult> History()
         {
-            return this.View(new CalculatorHistoryViewModel
-            {
-                CalculatorHistory = await calculatorHttpService.GetHistoryAsync()
-            });
+            var taxHistoryViewModel = await calculatorService.GetCalculatorHistoryView();
+
+            return this.View(taxHistoryViewModel);
         }
 
-        private async Task<CalculatorViewModel> GetCalculatorViewModelAsync(CalculateRequestViewModel? request = null)
-        {
-            try
-            {
-                var postalCodes = await calculatorHttpService.GetPostalCodesAsync();
-
-                return new CalculatorViewModel
-                {
-                    PostalCodes = postalCodes,
-                    PostalCodesDropDown = postalCodes.Select(u => new SelectListItem { Text = u.Code, Value = u.Code, Selected = (u.Code == request?.PostalCode ) }).ToList(),
-                    Income = request?.Income ?? 0M,
-                    PostalCode = request?.PostalCode ?? string.Empty
-                };
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
     }
 }

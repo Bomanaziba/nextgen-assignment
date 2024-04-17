@@ -1,7 +1,9 @@
+using System.Text.Json.Serialization;
 using Mapster;
 
 using PaySpace.Calculator.Data;
 using PaySpace.Calculator.Services;
+using PaySpace.Calculator.Services.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,11 @@ builder.Services.AddMapster();
 builder.Services.AddCalculatorServices();
 builder.Services.AddDataServices(builder.Configuration);
 
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -25,6 +32,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 app.MapControllers();
+app.UseMiddleware<ApplicationExcpetionHandler>();
 app.InitializeDatabase();
+
 
 app.Run();

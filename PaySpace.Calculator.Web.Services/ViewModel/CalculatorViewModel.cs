@@ -1,9 +1,8 @@
 
-
-using Microsoft.AspNetCore.Mvc.Rendering;
 using PaySpace.Calculator.Web.Services.Models;
+using System.Web.Mvc;
 
-namespace PaySpace.Calculator.Web.Models
+namespace PaySpace.Calculator.Web.Services.ViewModel
 {
     public sealed class CalculatorViewModel
     {
@@ -15,5 +14,7 @@ namespace PaySpace.Calculator.Web.Models
         public string PostalCode { get; set; }
 
         public decimal Income { get; set; }
+
+        public string ProcessingMessage { get; set; }
     }
 }
