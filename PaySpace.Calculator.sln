@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaySpace.Calculator.API", "PaySpace.Calculator.API\PaySpace.Calculator.API.csproj", "{9D42491E-B527-44B1-A35D-C4A6F7DBF3BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaySpace.Calculator.Data", "PaySpace.Calculator.Data\PaySpace.Calculator.Data.csproj", "{B5F49783-1E4D-44FC-B5D7-231C4A515386}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{91EF5A17-5D02-4C98-9C30-8ECCF90401B3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{11F8B99C-EB96-4510-92F2-B6D1A74A65AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaySpace.Calculator.Web.Services", "PaySpace.Calculator.Web.Services\PaySpace.Calculator.Web.Services.csproj", "{6502E531-BBA2-46C5-9F68-AD7FEBEC7AB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaySpace.Calculator.Services", "PaySpace.Calculator.Services\PaySpace.Calculator.Services.csproj", "{E3945538-24CD-4A53-9A1A-70B087F42E3C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaySpace.Calculator.Tests", "PaySpace.Calculator.Tests\PaySpace.Calculator.Tests.csproj", "{9022D637-762E-464B-995C-9E4DDF78CAAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaySpace.Calculator.Web", "PaySpace.Calculator.Web\PaySpace.Calculator.Web.csproj", "{F9826B33-2CB9-4B8C-B307-FF8328F02558}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9D42491E-B527-44B1-A35D-C4A6F7DBF3BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D42491E-B527-44B1-A35D-C4A6F7DBF3BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D42491E-B527-44B1-A35D-C4A6F7DBF3BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D42491E-B527-44B1-A35D-C4A6F7DBF3BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5F49783-1E4D-44FC-B5D7-231C4A515386}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5F49783-1E4D-44FC-B5D7-231C4A515386}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5F49783-1E4D-44FC-B5D7-231C4A515386}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5F49783-1E4D-44FC-B5D7-231C4A515386}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6502E531-BBA2-46C5-9F68-AD7FEBEC7AB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6502E531-BBA2-46C5-9F68-AD7FEBEC7AB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6502E531-BBA2-46C5-9F68-AD7FEBEC7AB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6502E531-BBA2-46C5-9F68-AD7FEBEC7AB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3945538-24CD-4A53-9A1A-70B087F42E3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3945538-24CD-4A53-9A1A-70B087F42E3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3945538-24CD-4A53-9A1A-70B087F42E3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3945538-24CD-4A53-9A1A-70B087F42E3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9022D637-762E-464B-995C-9E4DDF78CAAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9022D637-762E-464B-995C-9E4DDF78CAAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9022D637-762E-464B-995C-9E4DDF78CAAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9022D637-762E-464B-995C-9E4DDF78CAAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9826B33-2CB9-4B8C-B307-FF8328F02558}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9826B33-2CB9-4B8C-B307-FF8328F02558}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9826B33-2CB9-4B8C-B307-FF8328F02558}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9826B33-2CB9-4B8C-B307-FF8328F02558}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9D42491E-B527-44B1-A35D-C4A6F7DBF3BA} = {91EF5A17-5D02-4C98-9C30-8ECCF90401B3}
+		{B5F49783-1E4D-44FC-B5D7-231C4A515386} = {91EF5A17-5D02-4C98-9C30-8ECCF90401B3}
+		{6502E531-BBA2-46C5-9F68-AD7FEBEC7AB0} = {11F8B99C-EB96-4510-92F2-B6D1A74A65AE}
+		{E3945538-24CD-4A53-9A1A-70B087F42E3C} = {91EF5A17-5D02-4C98-9C30-8ECCF90401B3}
+		{9022D637-762E-464B-995C-9E4DDF78CAAE} = {91EF5A17-5D02-4C98-9C30-8ECCF90401B3}
+		{F9826B33-2CB9-4B8C-B307-FF8328F02558} = {11F8B99C-EB96-4510-92F2-B6D1A74A65AE}
+	EndGlobalSection
+EndGlobal
