@@ -12,6 +12,8 @@ namespace PaySpace.Calculator.Web.Services
             services.AddHttpClient<ICalculatorHttpService, CalculatorHttpService>(p => {
                 p.BaseAddress = new Uri(configuration["CalculatorSettings:ApiUrl"]);
             });
+
+            services.AddScoped<ICalculatorService, CalculatorService>();
         }
     }
 }

@@ -1,6 +1,6 @@
 
+using Microsoft.AspNetCore.Mvc.Rendering;
 using PaySpace.Calculator.Web.Services.Models;
-using System.Web.Mvc;
 
 namespace PaySpace.Calculator.Web.Services.ViewModel
 {
