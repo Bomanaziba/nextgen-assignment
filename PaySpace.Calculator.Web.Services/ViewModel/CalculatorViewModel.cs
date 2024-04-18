@@ -4,7 +4,7 @@ using PaySpace.Calculator.Web.Services.Models;
 
 namespace PaySpace.Calculator.Web.Services.ViewModel
 {
-    public sealed class CalculatorViewModel
+    public sealed class CalculatorViewModel : BaseViewModel
     {
 
         public IList<PostalCode> PostalCodes { get; set; }
@@ -14,7 +14,5 @@ namespace PaySpace.Calculator.Web.Services.ViewModel
         public string PostalCode { get; set; }
 
         public decimal Income { get; set; }
-
-        public string ProcessingMessage { get; set; }
     }
 }

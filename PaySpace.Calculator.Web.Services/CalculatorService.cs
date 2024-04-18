@@ -1,5 +1,6 @@
 
 
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using PaySpace.Calculator.Web.Services.Abstractions;
@@ -11,11 +12,11 @@ namespace PaySpace.Calculator.Web.Services;
 public class CalculatorService(ICalculatorHttpService calculatorHttpService, ILogger<CalculatorService> logger) : ICalculatorService
 {
 
-    public async Task<CalculatorViewModel> GetCalculateTaxView(CalculateRequestViewModel request = default)
+    public async Task<CalculatorViewModel> GetCalculateTaxView(CalculateRequestViewModel request = default, ModelStateDictionary message = default)
     {
         try
         {
-            return await GetCalculatorViewModelAsync(request);
+            return await GetViewModelFactoryAsync(request, errors: message?.ModelStateError());
         }
         catch (Exception ex)
         {
@@ -32,18 +33,28 @@ public class CalculatorService(ICalculatorHttpService calculatorHttpService, ILo
             if (request == null)
             {
                 var viewResp = await GetCalculateTaxView(request);
-                viewResp.ProcessingMessage = "Request is null";
+
+                viewResp.Errors = new List<string>{ "Request is null" };
 
                 return viewResp;
             }
 
-            await calculatorHttpService.CalculateTaxAsync(new Models.CalculateRequest
+            var resp2 = await calculatorHttpService.CalculateTaxAsync(new Models.CalculateRequest
             {
                 PostalCode = request.PostalCode,
                 Income = request.Income
             });
 
-            return await GetCalculatorViewModelAsync(request);
+            if(resp2.ResponseCode != "00")
+            {
+                var viewResp = await GetCalculateTaxView(request);
+
+                viewResp.Errors = new List<string>{ resp2.Message };
+
+                return viewResp;
+            }
+
+            return await GetViewModelFactoryAsync(request);
         }
         catch (Exception ex)
         {
@@ -53,7 +64,7 @@ public class CalculatorService(ICalculatorHttpService calculatorHttpService, ILo
         }
     }
 
-    public async Task<CalculatorHistoryViewModel> GetCalculatorHistoryView(CalculatorHistoryViewModel calculatorHistoryViewModel = default)
+    public async Task<CalculatorHistoryViewModel> GetCalculatorHistoryView(CalculatorHistoryViewModel calculatorHistoryViewModel = default, ModelStateDictionary message = default)
     {
         try
         {
@@ -64,7 +75,8 @@ public class CalculatorService(ICalculatorHttpService calculatorHttpService, ILo
             {
                 return new CalculatorHistoryViewModel
                 {
-                    CalculatorHistory = new List<CalculatorHistory>()
+                    CalculatorHistory = new List<CalculatorHistory>(),
+                    Errors = new List<string>{history?.Message}
                 };
             }
 
@@ -81,7 +93,7 @@ public class CalculatorService(ICalculatorHttpService calculatorHttpService, ILo
         }
     }
 
-    private async Task<CalculatorViewModel> GetCalculatorViewModelAsync(CalculateRequestViewModel? request = null)
+    private async Task<CalculatorViewModel> GetViewModelFactoryAsync(CalculateRequestViewModel? request = null, string redirectUrl = "", List<string> message = default, List<string> errors = default)
     {
         try
         {
@@ -94,7 +106,10 @@ public class CalculatorService(ICalculatorHttpService calculatorHttpService, ILo
                     PostalCodes = new List<PostalCode>(),
                     PostalCodesDropDown = new List<SelectListItem>(),
                     Income = request?.Income ?? 0M,
-                    PostalCode = request?.PostalCode ?? string.Empty
+                    PostalCode = request?.PostalCode ?? string.Empty,
+                    Errors = errors,
+                    ProcessingMessages = message,
+                    RedirectUrl = redirectUrl
                 };
             }
 
@@ -105,7 +120,10 @@ public class CalculatorService(ICalculatorHttpService calculatorHttpService, ILo
                 PostalCodes = postalCodes,
                 PostalCodesDropDown = postalCodes?.Select(u => new SelectListItem { Text = u.Code, Value = u.Code, Selected = (u.Code == request?.PostalCode) }).ToList() ?? new List<SelectListItem>(),
                 Income = request?.Income ?? 0M,
-                PostalCode = request?.PostalCode ?? string.Empty
+                PostalCode = request?.PostalCode ?? string.Empty,
+                Errors = errors,
+                ProcessingMessages = message,
+                RedirectUrl = redirectUrl
             };
         }
         catch (Exception ex)
@@ -115,4 +133,6 @@ public class CalculatorService(ICalculatorHttpService calculatorHttpService, ILo
             throw;
         }
     }
+
+
 }

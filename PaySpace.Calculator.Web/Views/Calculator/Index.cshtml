@@ -85,9 +85,34 @@
   }
 </style>
 
+@if(Model.ProcessingMessages != null && Model.ProcessingMessages.Any())
+{
+
+  foreach(var item in Model.ProcessingMessages)
+  {
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      @item
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  }
+
+}
+
+@if(Model.Errors != null && Model.Errors.Any())
+{
+
+  foreach(var item in Model.Errors)
+  {
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      @item
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  }
+
+}
 
 
-<h1 class="text-center">Welcome to Tax Computation</h1>
+
 
 
 <div class="container">

@@ -13,7 +13,9 @@ namespace PaySpace.Calculator.Web.Services
                 p.BaseAddress = new Uri(configuration["CalculatorSettings:ApiUrl"]);
             });
 
+            services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ICalculatorService, CalculatorService>();
+            
         }
     }
 }
