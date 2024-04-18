@@ -18,6 +18,8 @@ namespace PaySpace.Calculator.Services
             services.AddScoped<IFlatValueCalculator, FlatValueCalculator>();
             services.AddScoped<IProgressiveCalculator, ProgressiveCalculator>();
 
+            services.AddScoped<IFacadeEngine, FacadeEngine>();
+
             services.AddMemoryCache();
         }
     }

@@ -9,7 +9,8 @@ using PaySpace.Calculator.Services.Response;
 namespace PaySpace.Calculator.Services;
 
 public class TaxCalculatorService(IPostalCodeService postalCodeService, 
-    ICalculatorSettingsService calculatorSettingsService, 
+    IFacadeEngine facadeEngine,
+     ICalculatorSettingsService calculatorSettingsService, 
     IHistoryService historyService,
     ILogger<TaxCalculatorService> logger) : ITaxCalculatorService
 {
@@ -52,7 +53,8 @@ public class TaxCalculatorService(IPostalCodeService postalCodeService,
 
             CalculatorType calculatorType = postalTax.Calculator;
 
-            decimal tax = await ProcessTaxCalculation(calculatorType, income);
+            decimal tax = await facadeEngine.ExecuteAsync(calculatorType, income);
+
             await ProcessStoreTaxHistory(tax, calculatorType, postalCode, income);
 
             return new CalculateTaxResponse
@@ -69,15 +71,6 @@ public class TaxCalculatorService(IPostalCodeService postalCodeService,
             logger.LogError(ex, ex.Message);
 
             throw;
-        }
-
-        async Task<decimal> ProcessTaxCalculation(CalculatorType calculatorType, decimal income)
-        {
-            var calculateSettings = await calculatorSettingsService.GetSettingsAsync(calculatorType);
-
-            var taxPercentage = calculateSettings.Where(p => p.From <= income && p.To >= income).FirstOrDefault();
-
-            return ((taxPercentage?.Rate??0M)/100) * income;
         }
 
         async Task ProcessStoreTaxHistory(decimal tax, CalculatorType calculatorType, string postalCode, decimal income)
@@ -98,4 +91,5 @@ public class TaxCalculatorService(IPostalCodeService postalCodeService,
             return repo?.Where(p => p.Code == postalCode).FirstOrDefault();
         }
     }
+
 }
