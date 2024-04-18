@@ -11,6 +11,8 @@ namespace PaySpace.Calculator.Services
         {
             services.AddScoped<IPostalCodeService, PostalCodeService>();
             services.AddScoped<ITaxCalculatorService, TaxCalculatorService>();
+            services.AddScoped<ITokenUtil, TokenUtil>();
+            services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IHistoryService, HistoryService>();
             services.AddScoped<ICalculatorSettingsService, CalculatorSettingsService>();
 

@@ -21,6 +21,7 @@ namespace PaySpace.Calculator.Data
             var context = scope.ServiceProvider.GetRequiredService<CalculatorContext>();
 
             var pendingMigrations = context.Database.GetPendingMigrations().ToList();
+            
             if (pendingMigrations.Any())
             {
                 context.Database.Migrate();

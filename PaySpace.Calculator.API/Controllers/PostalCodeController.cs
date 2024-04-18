@@ -1,6 +1,7 @@
 
 
 using MapsterMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PaySpace.Calculator.Data.Models;
 using PaySpace.Calculator.Services.Abstractions;
@@ -11,6 +12,7 @@ namespace PaySpace.Calculator.Web.Controllers;
 
 [ApiController]
 [Route("api/[Controller]")]
+[Authorize]
 public class PostalCodeController(IPostalCodeService postalCodeService) : ControllerBase
 {
     [HttpGet]

@@ -1,12 +1,11 @@
 
+using System.Security.Cryptography;
 using PaySpace.Calculator.Services.Calculators;
 
 namespace PaySpace.Calculator.Services.Common;
 
 public class Utils
 {
-    public static decimal FlatRate = 17.5M;  
-    public static decimal FlatValuePercent = 5M;
-    public static decimal FlatValue = 10000M;
-    public static decimal MinFlatValueIncome = 200000M;
+    public const int SaltLength = 64;
+    public static HashAlgorithm SecureSHA512 = SHA512.Create();
 }

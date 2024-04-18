@@ -7,9 +7,11 @@ namespace PaySpace.Calculator.Data
     public class CalculatorContext(DbContextOptions<CalculatorContext> options) : DbContext(options)
     {
 
+        public DbSet<Users> Users { get; set; }
         public DbSet<CalculatorHistory> CalculatorHistory { get; set; }
         public DbSet<PostalCode> PostalCode { get; set; }
         public DbSet<PostalCode> CalculatorSetting { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

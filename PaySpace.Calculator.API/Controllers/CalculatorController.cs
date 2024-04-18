@@ -1,5 +1,5 @@
 ﻿using MapsterMapper;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PaySpace.Calculator.Data.Models;
 using PaySpace.Calculator.Services.Abstractions;
@@ -11,6 +11,7 @@ namespace PaySpace.Calculator.API.Controllers
 {
     [ApiController]
     [Route("api/[Controller]")]
+    [Authorize]
     public sealed class CalculatorController(
         ITaxCalculatorService taxCalculatorService,
         IHistoryService historyService)

@@ -13,4 +13,12 @@ public static class SystemCodes
     public static string InvalidIncome = "03";
 
     public static string DataNotFound = "04";
+
+    public static string EmptyRequest = "05";
+
+    public static string InvalidUsername = "06";
+    
+    public static string UnauthorizedUser = "07";
+
+
 }
