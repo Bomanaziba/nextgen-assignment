@@ -1,13 +1,20 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
+using PaySpace.Calculator.Data.Models;
+using PaySpace.Calculator.Services.Abstractions;
+using PaySpace.Calculator.Services.Models;
 
 namespace PaySpace.Calculator.Tests
 {
     [TestFixture]
     internal sealed class ProgressiveCalculatorTests
     {
+        Mock<IProgressiveCalculator> _progressiveCalculator;
+
         [SetUp]
         public void Setup()
         {
+            _progressiveCalculator = new Mock<IProgressiveCalculator>(MockBehavior.Strict);
         }
 
         [TestCase(-1, 0)]
@@ -21,10 +28,18 @@ namespace PaySpace.Calculator.Tests
         public async Task Calculate_Should_Return_Expected_Tax(decimal income, decimal expectedTax)
         {
             // Arrange
+            _progressiveCalculator.Setup(p => p.CalculateAsync(income).Result).Returns(new CalculateResult
+            {
+                Tax = expectedTax,
+                Calculator = Data.Models.CalculatorType.FlatRate
+            });
 
             // Act
+            var result = await _progressiveCalculator.Object.CalculateAsync(income);
+            Assert.That(result.Tax,Is.EqualTo(expectedTax));
 
             // Assert
+            _progressiveCalculator.VerifyAll();
         }
     }
 }

@@ -9,8 +9,7 @@ using PaySpace.Calculator.Services.Response;
 namespace PaySpace.Calculator.Services;
 
 public class TaxCalculatorService(IPostalCodeService postalCodeService, 
-    IFacadeEngine facadeEngine,
-     ICalculatorSettingsService calculatorSettingsService, 
+    IFacadeEngine facadeEngine, 
     IHistoryService historyService,
     ILogger<TaxCalculatorService> logger) : ITaxCalculatorService
 {
